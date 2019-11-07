@@ -48,7 +48,6 @@ def train_speaker(train_env, tok, n_iters, log_every=500, val_envs={}):
     writer = SummaryWriter(logdir=log_dir)
     listner = Seq2SeqAgent(train_env, "", tok, args.maxAction)
     speaker = Speaker(train_env, listner, tok)
-
     if args.fast_train:
         log_every = 40
 

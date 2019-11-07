@@ -124,6 +124,20 @@ class Evaluation(object):
 
         return bleu_score, precisions
 
+    def compute_internal_bleu_score(self, path_id):
+        from bleu import compute_bleu
+        insts = self.gt[str(path_id)]['instructions']
+        num_insts = len(insts)
+        bleus = []
+        for i in range(0, num_insts):
+            insts = self.gt[str(path_id)]['instructions'].copy()
+            candidate = insts[i]
+            insts.remove(insts[i])
+            refs = [self.tok.split_sentence(inst) for inst in insts]
+            tup = compute_bleu([refs], self.tok.split_sentence(candidate), smooth=False)
+
+            bleus.append(tup[0])
+        return np.mean(bleus)
 
 RESULT_DIR = 'tasks/R2R/results/'
 
